@@ -1,6 +1,9 @@
+import java.util.Stack;
+
 public class Expressao {
     public static boolean temPrioridade(char a, char b){
-        return false;
+
+        //Notas
         // a b -> return
 
         // + + -> false;
@@ -23,6 +26,15 @@ public class Expressao {
         // / * -> false;
         // / / -> false;
 
+        if ((a == '*' || a == '/') && (b == '+' || b == '-')) {
+            return true;
+        } else {
+            return false; 
+        }
+        
+
+
+
     }
 
     public static String posfixa(String expressaoEmLetras){
@@ -37,11 +49,34 @@ public class Expressao {
         //             empilhar da expressa
         //     else 
         //         desempilhar e mandar o da pilha pra expressao
-        
 
+        Stack<Character> operacoes = new Stack<>();
 
-        return expressaoPosFixas;
+    for (int i = 0; i < expressaoEmLetras.length(); i++) {
+        char caractere = expressaoEmLetras.charAt(i);
+
+        if (Character.isLetter(caractere)) {
+            // Se o caractere for uma letra, adicione-o à expressão pós-fixa
+            expressaoPosFixas += caractere;
+        } else {
+            // Se o caractere for um operador
+            while (!operacoes.isEmpty() && temPrioridade(operacoes.peek(), caractere)) {
+                // Verifica se o operador no topo da pilha tem prioridade sobre o operador atual
+                expressaoPosFixas += operacoes.pop();
+            }
+            // Empilhe o operador atual
+            operacoes.push(caractere);
+        }
     }
+
+    // Desempilhe qualquer operador restante e adicione-o à expressão pós-fixa
+    while (!operacoes.isEmpty()) {
+        expressaoPosFixas += operacoes.pop();
+    }
+
+    return expressaoPosFixas;
+}
+        
 
     public static double resolvePosFixa(String expressaoPosFixa, Fila numeros){
         return 0.0;
